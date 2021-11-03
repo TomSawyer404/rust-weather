@@ -55,8 +55,24 @@ impl W {
         );
         let url = Url::parse(&url).unwrap();
         let respon = reqwest::get(url).await?.json::<W>().await?;
-        println!("{:#?}", respon);
+        //println!("{:#?}", respon);
 
+        respon.print_weather();
         Ok(())
+    }
+
+    fn print_weather(&self) {
+        println!(
+            "Weather: {}, description: {}",
+            self.weather.details.main, self.weather.details.description
+        );
+        print!(
+            "Current Temperature: {:.2} Celsius, ",
+            self.main.temp - 273.0
+        );
+        println!(
+            "and it feels like: {:.2} Celsius",
+            self.main.feels_like - 273.0
+        );
     }
 }
