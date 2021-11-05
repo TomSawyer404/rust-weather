@@ -2,6 +2,8 @@ use reqwest::Url;
 use serde_derive::{Deserialize, Serialize};
 
 const APPID: &str = "4845f22236e074cdac59ae174aa580a3";
+const RED: &str = "\x1b[31m";
+const RESET: &str = "\x1b[0m";
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Coord {
@@ -63,16 +65,19 @@ impl W {
 
     fn print_weather(&self) {
         println!(
-            "Weather: {}, description: {}",
-            self.weather.details.main, self.weather.details.description
-        );
-        print!(
-            "Current Temperature: {:.2} Celsius, ",
-            self.main.temp - 273.0
+            "Weather: {}{}{}\nDescription: {}{}{}",
+            RED, self.weather.details.main, RESET, RED, self.weather.details.description, RESET
         );
         println!(
-            "and it feels like: {:.2} Celsius",
-            self.main.feels_like - 273.0
+            "Current Temperature: {}{:.2} Celsius{}\nFeels like: {}{:.2} Celsius{}",
+            RED,
+            self.main.temp - 273.0,
+            RESET,
+            RED,
+            self.main.feels_like - 273.0,
+            RESET
         );
+        println!("Humidity: {}{}{}", RED, self.main.humidity, RESET);
+        println!("Pressure: {}{} Pascal{}", RED, self.main.pressure, RESET);
     }
 }
